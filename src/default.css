@@ -1,0 +1,18 @@
+
+/* BASIC ELEMENTS */
+
+body { font-family: Tahoma, Arial, sans-serif; font-size: 13px; background: #ddd; }
+#wrapper { width: 90%; max-width: 1000px; margin: 10px auto; background: #fff; padding: 30px 15px; border: 1px solid #999; }
+#header { border-bottom: 1px solid #ccc; }
+#content-right { float: right; width: 20%; min-width: 100px; padding: 10px 5px; }
+#content { max-width: 800px; border-right: 1px solid #ccc; }
+#footer { border-top: 1px solid #ccc; padding: 5px; text-align: center; font-size: 70%; color: #666; }
+
+h1 { font-weight: normal; }
+a, a:link { color: #09f; }
+a:hover { color: #f00; }
+
+/* UNIVERSAL CLASSES */
+
+.fatalerror { background: #ffe5e5; width: 50%; margin: 20px auto; color: red; border-radius: 10px; padding: 10px 20px; }
+.fatalerror strong { display: block; }
