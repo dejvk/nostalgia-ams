@@ -1,7 +1,7 @@
 <?php
 
   require 'config.php';
-  include 'menu.php';
+  include 'Menu.php';
   if (M_UNIQUE || M_MYPROFILE || M_KARMAMGR)
     require 'player-ams.php';
 
@@ -23,7 +23,17 @@
   </div>
 
   <div id="content-right">
-    <?php print_menu(); ?>
+    <h2 class="sidebar-title">Menu</h2>
+    <?php
+    $main_menu = new CMenu();
+    $main_menu->AddItem ("Domů", "/");
+    if (M_LOGIN && !$_SESSION['accid'])
+      $main_menu->AddItem ("Přihlásit", "?mode=login");
+    if (M_LOGIN && $_SESSION['accid'])
+      $main_menu->AddItem ("Odhlásit", "?mode=logout");
+
+    $main_menu->PrintVerticalMenu ();
+    ?>
   </div>
 
 
