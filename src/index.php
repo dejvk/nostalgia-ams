@@ -1,6 +1,7 @@
 <?php
 
   require 'config.php';
+  include 'menu.php';
   if (M_UNIQUE || M_MYPROFILE || M_KARMAMGR)
     require 'player-ams.php';
 
@@ -22,7 +23,7 @@
   </div>
 
   <div id="content-right">
-    <!-- MENU -->
+    <?php print_menu(); ?>
   </div>
 
 
@@ -42,7 +43,8 @@
   </div>
 
   <div id="footer">
-    2013 &copy; Nostalgia AMS
+    <div id="copyright">2013 &copy; <?php echo L_SITENAME; ?></div>
+    <div id="poweredby">powered by <a href="http://www.github.com/dejvk/nostalgia-ams" class="external">Nostalgia AMS</a></div>
   </div>
 </div>
 </body>

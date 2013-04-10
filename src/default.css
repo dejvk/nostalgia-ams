@@ -4,11 +4,17 @@
 body { font-family: Tahoma, Arial, sans-serif; font-size: 13px; background: #ddd; }
 #wrapper { width: 90%; max-width: 1000px; margin: 10px auto; background: #fff; padding: 30px 15px; border: 1px solid #999; }
 #header { border-bottom: 1px solid #ccc; }
-#content-right { float: right; width: 20%; min-width: 100px; padding: 10px 5px; }
-#content { max-width: 800px; border-right: 1px solid #ccc; }
-#footer { border-top: 1px solid #ccc; padding: 5px; text-align: center; font-size: 70%; color: #666; }
+#content-right { float: right; width: 20%; min-width: 100px; }
+#content-right ul { padding-left: 0; }
+#content-right ul.sidebar-menu li { list-style-type: none; display: block; padding-left: 20px; }
+#content-right ul.sidebar-menu a:link, #content-right ul.sidebar-menu a 
+  { color: #111; text-decoration: none; line-height: 160%; font-weight: bold; }
+#content-right ul.sidebar-menu li:hover { background: #ddd; }
+#content { width: 80%; max-width: 800px; border-right: 1px solid #ccc; }
+#footer { clear: both; border-top: 1px solid #ccc; padding: 5px; text-align: center; font-size: 70%; color: #666; }
 
 h1 { font-weight: normal; }
+h2.sidebar-title { font-size: 120%; font-weight: normal; margin-left: 10px; color: #444; }
 a, a:link { color: #09f; }
 a:hover { color: #f00; }
 
