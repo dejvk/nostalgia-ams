@@ -7,7 +7,7 @@
   {
     private $_guid;
     private $_name;
-    private $_dateOfBirth;
+    private $_age;
     private $_desc;
     private $_race;
     private $_class;
@@ -40,7 +40,7 @@
     {
       $this->_guid        = $arr["guid"];
       $this->_name        = $arr["name"];
-      $this->setDateOfBirth ( $arr["dob"] );
+      $this->SetAge ( $arr["dob"] );
       $this->_desc        = $arr["desc"];
       $this->_race        = $arr["race"];
       $this->_class       = $arr["class"];
@@ -88,7 +88,7 @@
       ?>
         <tr>
           <td class="character-name characterlist-name"><?php echo $this->_name; ?>
-          <td class="characterlist-age"><?php echo $this->_dateOfBirth; ?>
+          <td class="characterlist-age"><?php echo $this->_age; ?>
           <td class="characterlist-desc">
             <?php 
               if (strlen($this->_desc) > 75) 
