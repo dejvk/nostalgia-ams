@@ -1,13 +1,29 @@
 <?php
 
-  /// Represents table of requests
-  class CRequestList
+  /// Reprezentuje kontejner na žádosti o custom itemy.
+  class RequestList
   {
     public $m_Requests; ///< Array of requests loaded
 
 
-    /// Loads actual requests from database
-    public function __construct ()
+    /// Konstruktor.
+    /** Pokud je zadán parametr $uid, seznam bude obsahovat jen tuto žádost.
+     *  Pokud je parametr null, do seznamu budou zařazeny všechny žádosti,
+     *  které nejsou uzavřené a zamítnuté před více než sedmi dny.
+     *  \param uid Identifikátor žádosti. Volitelný parametr. */
+    public function __construct ($uid = null)
+    {
+      if ($uid)
+        $this -> MakeNewFromParameter ($uid);
+      else
+        $this -> LoadCurrentFromDatabase ();
+    }
+
+
+    /// Načte aktuální žádosti z databáze.
+    /** Načteny jsou jen žádosti, které nejsou uzavřené a zamítnuté před více
+     *  než sedmi dny. */
+    private function LoadCurrentFromDatabase ()
     {
       global $db;
       $q = $db -> query ("SELECT req.uid, chr.name, chr.totaltime, req.item_type, req.item_name, req.item_entry,
@@ -21,7 +37,31 @@
       $i = 0;
       while ($r = $q -> fetch_assoc())
       {
-        $this->m_Requests[$i++] = new CRequest ($r['uid'], $r['name'], $r['totaltime'], $r['item_type'], $r['item_name'],
+        $this->m_Requests[$i++] = new Request ($r['uid'], $r['name'], $r['totaltime'], $r['item_type'], $r['item_name'],
+                                          $r['item_entry'], $r['item_desc'], $r['worker'], $r['material'], $r['time'],
+                                          $r['last_change'], $r['state'], $r['supervized_by']);
+      }
+
+      $q -> free ();
+    }
+
+
+    /// Creates list with one request on given parameter
+    /** \param uid Unique ID of request */
+    private function MakeNewFromParameter ($uid)
+    {
+      global $db;
+      $q = $db -> query ("SELECT req.uid, chr.name, chr.totaltime, req.item_type, req.item_name, req.item_entry,
+                            req.item_desc, chr2.name AS worker, req.material, req.time, req.last_change, req.state, req.supervized_by
+                          FROM ".T_UNIQUE_LIST." req
+                          JOIN ".T_CHARACTERS." chr ON (req.character = chr.guid)
+                          LEFT JOIN ".T_CHARACTERS." chr2 ON (req.worker = chr2.guid)
+                          WHERE req.uid = $uid");
+
+      $i = 0;
+      while ($r = $q -> fetch_assoc())
+      {
+        $this->m_Requests[$i++] = new Request ($r['uid'], $r['name'], $r['totaltime'], $r['item_type'], $r['item_name'],
                                           $r['item_entry'], $r['item_desc'], $r['worker'], $r['material'], $r['time'],
                                           $r['last_change'], $r['state'], $r['supervized_by']);
       }
@@ -45,7 +85,7 @@
       <?php
       foreach ($this->m_Requests as $request)
       {
-        $request -> Draw ();
+        $request -> DrawRow ();
       }
       ?>
 
@@ -56,8 +96,10 @@
   };
 
 
-  /// Represents single request
-  class CRequest
+  /// Reprezentuje jednu žádost o custom item.
+  /** \todo Vytvoření nové žádosti uživatelem.
+   *  \todo Editace žádostí. */
+  class Request
   {
     public $m_Uid;
     public $m_ChrName;
@@ -74,7 +116,7 @@
     public $m_SupervizedBy;
 
 
-    /// Load-from-array constructor
+    /// Konstruktor pro hromadné načtení žádostí.
     /** Prepares request on given parameters called automatically after mass load from database */
     public function __construct ( $uid, $name, $totaltime, $item_type, $item_name,
                                   $item_entry, $item_desc, $worker, $material, $time,
@@ -96,8 +138,8 @@
     }
 
 
-    /// Prints out single row to table of requests
-    public function Draw ()
+    /// Vypíše formátovanou žádost jako řádek tabulky.
+    public function DrawRow ()
     {
       ?>
 
@@ -116,20 +158,57 @@
           <div class="custom-comments">
             <?php echo $this->Comments(); ?>
           </div>
-        <td class="time"><?php echo $this->m_Created; ?>
+        <td class="time"><?php echo $this->m_Created; ?><div class="custom-more"><a href="?mode=unique&req=<?php echo $this->m_Uid; ?>">více &raquo;</div>
       </tr>
 
       <?php
     }
 
 
+
+    /** \brief Prints out single request
+     * If it's own request, you can mark it as closed
+     * If you are privileged, you can mark it as supervized
+     * If you are capable, you can vote
+     * If you are superadmin, you can close it
+     * \todo Celé ovládání žádostí. */
+    static function DrawSingle ($uid)
+    {
+      $reql = new RequestList ($uid);
+      $reql -> Draw ();
+
+      if (Rights() >= 5)
+      {
+        ?>
+        <table id="custom-control">
+        <tr>
+          <th>Ovládání žádosti
+          <th>Dozorování
+          <th>Hlasování
+          <th>Uzavření
+        </tr>
+        <tr>
+          <td>[Zrušit žádost]
+          <td>[Dozorováno]
+          <td>[+] [&minus;]
+          <td>[Schválit] [Zamítnout] [Uzavřít]
+        </tr>
+        </table>
+
+        <?php
+      }
+    }
+
+
     /// Translates m_State to human readable label
+    /** \return CSS-Styled label with state of request */
     private function State ()
     {
       switch ($this->m_State)
       {
         case  0: $cls = 'pending';  $text = 'Rozhoduje se'; break;
-        case  1: $cls = 'crafted';  $text = 'Dozorováno';  break;
+        case  1: $cls = 'crafted';
+                 $text = 'Vyrobeno, <span class="custom-supervizor">dozor '.ucfirst(strtolower($this->m_SupervizedBy)).'</span>';  break;
         case  2: $cls = 'closed';   $text = 'Uzavřeno';  break;
         case 10: $cls = 'denied';   $text = 'Zamítnuto'; break;
         case 11: $cls = 'approved'; $text = 'Schváleno'; break;

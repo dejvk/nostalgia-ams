@@ -1,0 +1,122 @@
+
+/* BASIC ELEMENTS */
+
+body { font-family: Tahoma, Arial, sans-serif; font-size: 13px; background: #eeeef5; }
+#wrapper { width: 90%; max-width: 1200px; margin: 10px auto; background: inherit; padding: 30px 15px; border: 0px solid #999; }
+#header { border-bottom: 0px solid #ccc; }
+#content-right { float: right; width: 20%; min-width: 100px; }
+#content-right ul.sidebar-menu { padding-left: 0; background: #fff; margin-top: 0; border: 1px solid #ddd; border-top: 0; }
+#content-right ul.sidebar-menu li { list-style-type: none; display: block; padding-left: 20px; }
+#content-right ul.sidebar-menu a:link, #content-right ul.sidebar-menu a 
+  { color: #459; text-decoration: none; line-height: 160%; font-weight: bold; font-size: 90%; }
+#content-right ul.sidebar-menu a:hover { text-decoration: underline; }
+#content { width: 80%; max-width: 1000px; border-right: 0px solid #ccc; }
+#footer { clear: both; border-top: 1px solid #ccc; padding: 5px; text-align: center; font-size: 70%; color: #666; }
+
+h1 { font-weight: bold; text-transform: lowercase; color: #678; }
+h3.sidebar-title, h2.sidebar-title
+  { font-size: 90%; font-weight: bold; margin: 0; padding: 7px; color: #678; background: #f9f9ff;
+    border: 1px solid #ddd; border-bottom: 1px solid #eee; }
+h3.sidebar-title { margin-right: 20px; }
+h2.sidebar-title div { float: right; }
+a, a:link { color: #09f; }
+a:hover { color: #f00; }
+table { font-size: 12px; border-collapse: collapse; }
+
+
+/* UNIVERSAL CLASSES */
+
+.fatalerror { background: #ffe5e5; width: 50%; margin: 20px auto; color: red; border: 1px solid red; padding: 10px 20px; }
+.fatalerror strong { display: block; }
+.not-implemented { cursor: not-allowed; text-decoration: line-through; }
+td.character-name { font-variant: small-caps; font-weight: bold; }
+
+
+/* SHARED */
+#requestlist, #chrsheetreg, #characterlist, #karmalist, #custom-control, #ticketlist
+ { width: 98%; text-align: center; margin: 0 auto 20px auto; background: #fff; border: 1px solid #ddd; border-top: 0; }
+#requestlist th, #chrsheetreg th, #characterlist th, #karmalist th, #custom-control th, #ticketlist th
+  { font-size: 90%; font-weight: bold; padding: 7px; color: #678; background: #f9f9ff;
+    border: 1px solid #ddd; border-bottom: 1px solid #eee; }
+#requestlist tr:hover td, #chrsheetreg tr:hover td, #characterlist tr:hover td, #karmalist tr:hover td,
+#accountprofile tr:hover td, #ticketlist tr:hover td
+ { background: #eee; }
+
+/* LABELS */
+span[class^="label-status-"] { padding: 1px 3px; color: #fff; font-weight: bold; }
+.label-status-pending { background: #E3A21A; }
+.label-status-closed { background: #666666; }
+.label-status-crafted { background: #2D89EF; }
+.label-status-approved { background: #00A300; }
+.label-status-denied { background: #B91D47; }
+
+
+/* REQUEST LIST */
+#requestlist th.character-name { width: 10%; max-width: 100px; }
+#requestlist th.custom-name { width: 15%; max-width: 200px; }
+#requestlist th.custom-material { width: 15%; max-width: 150px; }
+#requestlist th.time { width: 30px; }
+#requestlist .character-played { font-weight: normal; }
+#requestlist td.time { font-size: 70%; }
+#requestlist td.custom-request { font-size: 75%; text-align: justify; padding: 10px; }
+#requestlist .custom-desc { color: #666; margin: 2px 0; }
+#requestlist .custom-material:before { content: "Materiál: "; font-weight: bold; }
+#requestlist .custom-name { font-size: 120%; }
+#requestlist .custom-name a, #requestlist .custom-name a:link, #requestlist .custom-name a:visited
+  { color: #000; text-decoration: none; font-weight: bold; }
+#requestlist .custom-name a:hover
+  { color: #f00; }
+#requestlist .custom-more a { text-decoration: none; }
+#requestlist .custom-comments .custom-comment-yes { color: #282; }
+#requestlist .custom-comments .custom-comment-yes:before { content: "Pro: "; font-weight: bold; }
+#requestlist .custom-comments .custom-comment-no { color: #f00; }
+#requestlist .custom-comments .custom-comment-no:before { content: "Proti: "; font-weight: bold; }
+#requestlist .custom-supervizor { font-size: 90%; font-weight: normal; }
+#custom-control td { padding: 3px 5px; }
+
+
+/* CHAR SHEET REGISTER */
+#chrsheetreg .chrsheetrow-name { width: 20%; max-width: 250px; }
+#chrsheetreg td { padding: 3px 5px; }
+#chrsheetreg td.chrsheetrow-desc { text-align: left; }
+
+
+/* MY CHARACTERS */
+#characterlist td.characterlist-desc { color: #666; margin: 2px 0; font-size: 80%; width: 60%; }
+#characterlist td { padding: 3px 5px; }
+#characterlist td.characterlist-name { width: 20%; max-width: 250px; }
+#characterlist .characterlist-age { width: 50px; }
+
+
+/* KARMA LIST */
+#karmalist caption { font-size: 125%; font-weight: bold; }
+#karmalist .karmalist-value { width: 50px; }
+#karmalist .karmalist-value-negative { background: #fcc; }
+#karmalist .karmalist-reason-invalid { background: #fcc; }
+#karmalist td { padding: 3px 5px; }
+
+
+/* MY PROFILE */
+
+#accountprofile { width: 60%; max-width: 500px; margin: 20px auto; }
+#accountprofile th { text-align: right; }
+#accountprofile td, #accountprofile th { padding: 3px 5px; }
+
+
+/* TICKET LIST */
+#ticketlist .ticket-player { width: 15%; }
+#ticketlist td.ticket-body { font-size: 80%; padding: 10px; text-align: justify; }
+#ticketlist td.ticket-body br { line-height: 0; }
+#ticketlist .ticket-response { border-top: 1px solid #aaa; color: #666; }
+#ticketlist .ticket-change { font-size: 80%; width: 10%; }
+
+
+/* CHARACTER'S PROFILE */
+#characterprofile-wrapper
+ { width: 98%; margin: 0 auto 20px auto; background: #fff; border: 1px solid #ddd; border-top: 0; min-height: 240px; padding-top: 10px; }
+#characterprofile { margin: 20px; }
+#characterprofile .characterportrait-big
+  { width: 150px; height: 200px; background: #ccc; float: left; margin: 0 10px 10px 0; }
+#characterprofile .character-name { font-size: 140%; }
+#characterprofile .guild-name { color: #444; /* TEST: */ content: "Název cechu"; }
+#characterprofile .character-desc { font-size: 95%; }

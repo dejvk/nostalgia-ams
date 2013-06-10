@@ -1,11 +1,12 @@
 <?php
 
-
-class CMenu
+/// Reprezentuje navigační menu
+class Menu
 {
   private $m_Items;     ///< Array of hyperlinks
   private $m_ItemsCnt;  ///< Number of items in menu
   
+  /// Konstruktor.
   public function __construct ()
   {
     $this->m_ItemsCnt = 0;
@@ -19,6 +20,11 @@ class CMenu
   public function AddItem ($name, $address)
   {
     $this->m_Items[$this->m_ItemsCnt++] = "<a href=\"$address\">$name</a>";
+  }
+  
+  public function AddSection ($name)
+  {
+    $this->m_Items[$this->m_ItemsCnt++] = "<h3 class=\"sidebar-title\">$name</h3>";
   }
 
 

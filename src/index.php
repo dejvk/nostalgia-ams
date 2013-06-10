@@ -1,24 +1,54 @@
 <?php
 
-  require 'config.php';
+/** \mainpage Nostalgia IS 0.2
+ *    Informační systém pro server Nostalgia RP.
+ *
+ *    Všechny vytvořené třídy a metody dokumentujte!
+ *
+ *    Co je potřeba udělat?
+ *    \li Podávání žádostí o customky.
+ *    \li Možnost podat si profil postavy.
+ *    \li Systém na životopisy.
+ *    \li Sloučit třídy Character a CharacterSheet
+ *    \li Vytvořit výjimky UnauthorizedException a NotLoggedException
+ *
+ *
+ *
+ */
+    session_start();
 
-  $db = mysqli_connect (MYSQL_SERVER, MYSQL_USER, MYSQL_PASS);
-  $db -> query ("SET NAMES 'utf8'");
+    require './config/config.php';
+    require './config/SecurityPolicy.php';
 
-  include 'Menu.php';
-  /*if (M_UNIQUE || M_MYPROFILE || M_KARMAMGR)
-    require 'player-ams.php';                    << Not implemented at the moment */
-  if (M_UNIQUE)
-    include 'Unique.php';
+    include './classes/Menu.php';
+    include './classes/Character.php';
+
+    if (M_UNIQUE || M_MYPROFILE || M_KARMAMGR)
+      include './classes/Player.php';
+      
+    if (M_KARMAMGR)
+      include './classes/Karma.php';
+
+    if (M_LOGIN)
+      include 'Login.php';
+
+    if (M_UNIQUE)
+      include './classes/Unique.php';
+
+    if (M_CHRREGISTER)
+      include './classes/ChrRegister.php';
+
+    if (M_TICKETS)
+      include './classes/Ticket.php';
 
 ?>
 <!doctype html>
 <html lang="<?php echo L_LANG; ?>">
 <head>
   <meta charset="UTF-8">
-  <meta name="application-name" content="Nostalgia AMS">
+  <meta name="application-name" content="Nostalgia IS">
   <meta name="author" content="David Knap">
-  <link rel="stylesheet" type="text/css" href="<?php echo L_STYLE; ?>.css">
+  <link rel="stylesheet" type="text/css" href="/public_html/<?php echo L_STYLE; ?>.css">
   <title><?php echo L_SITENAME; ?></title>
 </head>
 
@@ -31,22 +61,42 @@
   <div id="content-right">
     <h2 class="sidebar-title">Menu</h2>
     <?php
-    $main_menu = new CMenu();
+    $main_menu = new Menu();
     $main_menu -> AddItem ("Domů", "/");
     if (M_UNIQUE)
       $main_menu -> AddItem ("Žádosti o podporu", "?mode=unique");
-    if (M_LOGIN && M_MYPROFILE && Logged())
-      $main_menu -> AddItem ("Profil účtu", "?mode=profile");
-    if (M_LOGIN && M_KARMAMGR && Logged())
-      $main_menu -> AddItem ("Zobrazení karmy", "?mode=karma");
-      
-    if (M_LOGIN && !Logged())
+    if (M_CHRREGISTER)
+      $main_menu -> AddItem ("Databáze postav", "?mode=chrregister");
+    if (M_LOGIN && ! Logged ())
       $main_menu -> AddItem ("Přihlásit", "?mode=login");
-    if (M_LOGIN && Logged())
-      $main_menu -> AddItem ("Odhlásit", "?mode=logout");
-      
 
-    $main_menu->PrintVerticalMenu ();
+    $main_menu -> PrintVerticalMenu ();
+
+
+
+    if (Logged())
+    {
+      ?>
+      <h2 class="sidebar-title"><?php echo ucfirst(strtolower($_SESSION["username"]))." <div>R".Rights()."</div>"; ?></h2>
+      <?php
+
+      $logged_menu = new Menu ();
+
+      if (M_LOGIN && M_MYPROFILE)
+        $logged_menu -> AddItem ("Profil účtu", "?mode=myaccount");
+      if (M_LOGIN && CHRREGISTER)
+        $logged_menu -> AddItem ("Mé postavy", "?mode=mycharacters");
+      if (M_LOGIN && M_KARMAMGR)
+        $logged_menu -> AddItem ("Zobrazení karmy", "?mode=karma");
+      if (M_LOGIN && M_TICKETS && Rights() >= SEC::MIN_TICKETS)
+        $logged_menu -> AddItem ("Zobrazení ticketů", "?mode=tickets");
+
+      $logged_menu -> AddItem ("Odhlásit", "?mode=logout");
+
+      $logged_menu -> PrintVerticalMenu ();
+
+    }
+
     ?>
   </div>
 
@@ -54,17 +104,59 @@
   <div id="content">
 
     <?php
+
       try {
 
         if (!MYSQL_SERVER)
           throw new Exception ("Nebylo nastaveno žádné připojení k databázi.");
 
+        $db = mysqli_init();
+        $db -> options (MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+        if (!$db -> real_connect (MYSQL_SERVER, MYSQL_USER, MYSQL_PASS))
+          throw new Exception ("Připojení k databázi selhalo.<br>".$db->error);
+        $db -> query ("SET NAMES 'utf8'");
+
         switch ($_GET['mode'])
         {
           default: break;
           case "unique":
-            $r = new CRequestList();
+            if ($_GET['req'])
+              Request::DrawSingle ($_GET['req']);
+            else
+            {
+              $r = new RequestList();
+              $r -> Draw ();
+            }
+            break;
+          case "chrregister":
+            $r = new CharacterSheetRegister ();
             $r -> Draw ();
+            break;
+          case "mycharacters":
+            $r = new CharacterList ();
+            $r -> Draw ();
+            break;
+          case "myaccount":
+            $r = new Player();
+            $r -> DrawProfile ();
+            break;
+          case "character":
+            $r = new Character ();
+            $r -> DrawProfile ();
+            break;
+          case "karma":
+            $r = new KarmaList ();
+            $r -> Draw ();
+            break;
+          case "tickets":
+            $r = new TicketList ();
+            $r -> Draw ();
+            break;
+          case "login":
+            Login::DrawDialogue ();
+            break;
+          case "logout":
+            Login::Logout ();
             break;
         }
 
@@ -86,7 +178,17 @@
 
   function Logged()
   {
-    return $_SESSION['accid'];
+    return $_SESSION['account_id'];
+  }
+  
+  function Account()
+  {
+    return $_SESSION['account_id'];
+  }
+
+  function Rights()
+  {
+    return $_SESSION['rights'];
   }
 
 
