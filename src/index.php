@@ -68,7 +68,9 @@
     if (M_CHRREGISTER)
       $main_menu -> AddItem ("Databáze postav", "?mode=chrregister");
     if (M_LOGIN && ! Logged ())
+    {
       $main_menu -> AddItem ("Přihlásit", "?mode=login");
+    }
 
     $main_menu -> PrintVerticalMenu ();
 
@@ -116,49 +118,8 @@
           throw new Exception ("Připojení k databázi selhalo.<br>".$db->error);
         $db -> query ("SET NAMES 'utf8'");
 
-        switch ($_GET['mode'])
-        {
-          default: break;
-          case "unique":
-            if ($_GET['req'])
-              Request::DrawSingle ($_GET['req']);
-            else
-            {
-              $r = new RequestList();
-              $r -> Draw ();
-            }
-            break;
-          case "chrregister":
-            $r = new CharacterSheetRegister ();
-            $r -> Draw ();
-            break;
-          case "mycharacters":
-            $r = new CharacterList ();
-            $r -> Draw ();
-            break;
-          case "myaccount":
-            $r = new Player();
-            $r -> DrawProfile ();
-            break;
-          case "character":
-            $r = new Character ();
-            $r -> DrawProfile ();
-            break;
-          case "karma":
-            $r = new KarmaList ();
-            $r -> Draw ();
-            break;
-          case "tickets":
-            $r = new TicketList ();
-            $r -> Draw ();
-            break;
-          case "login":
-            Login::DrawDialogue ();
-            break;
-          case "logout":
-            Login::Logout ();
-            break;
-        }
+
+        GetContent ();
 
       } catch (Exception $e) {
         echo "<div class=\"fatalerror\">Aplikace byla ukončena kvůli následující chybě: <strong>".$e->getMessage()."</strong></div>";
@@ -191,7 +152,55 @@
     return $_SESSION['rights'];
   }
 
-
+  function GetContent ()
+  {
+    switch ($_GET['mode'])
+    {
+      default: break;
+      case "unique":
+        if ($_GET['req'])
+          Request::DrawSingle ($_GET['req']);
+        else
+        {
+          $r = new RequestList();
+          $r -> Draw ();
+        }
+        break;
+      case "chrregister":
+        $r = new CharacterSheetRegister ();
+        $r -> Draw ();
+        break;
+      case "mycharacters":
+        $r = new CharacterList ();
+        $r -> Draw ();
+        break;
+      case "myaccount":
+        $r = new Player();
+        $r -> DrawProfile ();
+        break;
+      case "character":
+        $r = new Character ();
+        $r -> DrawProfile ();
+        break;
+      case "karma":
+        $r = new KarmaList ();
+        $r -> Draw ();
+        break;
+      case "tickets":
+        $r = new TicketList ();
+        $r -> Draw ();
+        break;
+      case "registration":
+        Login::Registration ();
+        break;
+      case "login":
+        Login::DrawDialogue ();
+        break;
+      case "logout":
+        Login::Logout ();
+        break;
+    }
+  }
 
 
 ?>

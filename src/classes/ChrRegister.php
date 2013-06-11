@@ -2,7 +2,7 @@
 
 
   /// Reprezentuje registr postav s vyplněnými RP daty.
-  /** \warning Celé tohle by se mělo sloučit s classou CharacterList. */
+  /** \deprecated Bude sloučeno s třídou CharacterList. */
   class CharacterSheetRegister
   {
     private $_characters;
@@ -51,7 +51,7 @@
 
 
   /// Reprezentuje jeden vyplněný profil postavy.
-  /** \warning Celé tohle by se mělo sloučit s classou Character. */
+  /** \deprecated Bude sloučeno s třídou Character. */
   class CharacterSheet
   {
     private $_guid;
