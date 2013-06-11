@@ -10,7 +10,7 @@
     /** Pokud je zadán parametr $uid, seznam bude obsahovat jen tuto žádost.
      *  Pokud je parametr null, do seznamu budou zařazeny všechny žádosti,
      *  které nejsou uzavřené a zamítnuté před více než sedmi dny.
-     *  \param uid Identifikátor žádosti. Volitelný parametr. */
+     *  \param $uid Identifikátor žádosti. Volitelný parametr. */
     public function __construct ($uid = null)
     {
       if ($uid)
@@ -47,7 +47,7 @@
 
 
     /// Creates list with one request on given parameter
-    /** \param uid Unique ID of request */
+    /** \param $uid Unique ID of request */
     private function MakeNewFromParameter ($uid)
     {
       global $db;
@@ -101,19 +101,19 @@
    *  \todo Editace žádostí. */
   class Request
   {
-    public $m_Uid;
-    public $m_ChrName;
-    public $m_ChrPlayed;
-    public $m_ItemType;
-    public $m_ItemName;
-    public $m_ItemEntry;
-    public $m_ItemDesc;
-    public $m_ItemMaterial;
-    public $m_Worker;
-    public $m_Created;
-    public $m_LastChange;
-    public $m_State;
-    public $m_SupervizedBy;
+    private $m_Uid;
+    private $m_ChrName;
+    private $m_ChrPlayed;
+    private $m_ItemType;
+    private $m_ItemName;
+    private $m_ItemEntry;
+    private $m_ItemDesc;
+    private $m_ItemMaterial;
+    private $m_Worker;
+    private $m_Created;
+    private $m_LastChange;
+    private $m_State;
+    private $m_SupervizedBy;
 
 
     /// Konstruktor pro hromadné načtení žádostí.

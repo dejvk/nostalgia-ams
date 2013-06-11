@@ -11,7 +11,7 @@ class Guild
 
 
   /** Vrátí jméno cechu podle zadaného ID.
-   *  \param id ID cechu.
+   *  \param $id ID cechu.
    *  \return Jméno cechu.*/
   static function GetNameById ( $id )
   {

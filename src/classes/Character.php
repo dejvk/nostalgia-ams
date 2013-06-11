@@ -19,7 +19,7 @@
      *  Pokud není array předána, pokusí se importovat z databáze na základě
      *  <tt>GET["character"]</tt>.
      *  \throws Exception Nebyl nalezen žádný vstupní parametr.
-     *  \param arr Array obsahující informace o postavě
+     *  \param $arr Array obsahující informace o postavě
      *  [ GUID, Jméno, (Datum narození, Rok narození), Popis,
      *    Rasa, Povolání, Odehraný čas ] */
     public function __construct ( $arr = null )
@@ -33,7 +33,7 @@
 
 
     /** Konstruktor z arraye.
-     *  \param arr Array obsahující informace o postavě
+     *  \param $arr Array obsahující informace o postavě
      *  [ GUID, Jméno, (Datum narození, Rok narození), Popis,
      *    Rasa, Povolání, Odehraný čas ] */
     private function ImportFromArray ( $arr )
@@ -49,7 +49,7 @@
 
 
     /** Konstruktor podle jména.
-     *  \param name Jméno postavy */
+     *  \param $name Jméno postavy */
     private function ImportByName ( $name )
     {
       global $db;

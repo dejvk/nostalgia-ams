@@ -13,9 +13,9 @@ class Ticket
 
 
   /// Konstruktor. Vytvoří instanci podle parametrů. Určeno pro hromadné načítání.
-  /** \param text,resp Text ticketu a odpovědi.
-   *  \param change Poslední změna ticketu.
-   *  \param name,username,login Informace o postavě a hráči. */
+  /** \param $text,$resp Text ticketu a odpovědi.
+   *  \param $change Poslední změna ticketu.
+   *  \param $name,$username,$login Informace o postavě a hráči. */
   public function __construct ( $text, $resp, $change,
                                 $name, $username, $login )
   {

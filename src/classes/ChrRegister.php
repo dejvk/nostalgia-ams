@@ -64,7 +64,7 @@
 
 
     /// Konstruktor. Načte data z arraye.
-    /** \param arr Array obsahující data o postavě. [ guid, name, birth_date,
+    /** \param $arr Array obsahující data o postavě. [ guid, name, birth_date,
      *  birth_year, profession, description ]. */
     public function __construct ( $arr )
     {
@@ -74,12 +74,6 @@
       $this->_class     = $arr ['profession'];
       $this->_desc      = $arr ['description'];
     }
-
-
-    /// Vypíše profil postavy
-    /** \todo Zcela nezpracované.
-     *  \warning Konflikt s Character::DrawProfile(). */
-    public function DrawSingle () {}
 
 
     /// Vypíše stručný záznam postavy jako řádek tabulky.

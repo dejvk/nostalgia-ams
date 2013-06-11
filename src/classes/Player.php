@@ -96,6 +96,12 @@
     
     
     /// Zpracuje hodnoty Absolutní, Vážené a Aktivní vážené karmy.
+    /** Absolutní karma: sum{hodnocení}
+     *  \par Vážená karma: sum{hodnocení od hráčů}
+     *     + 2*sum{kladné hodnocení od GM>3}
+     *     + 4*sum{záporné hodnocení od GM>3}
+     *  \par Aktivní vážená karma: Vážená karma, kde hodnotící je GM>3 nebo
+     *  byl přihlášený během posledních 90 dní. */
     private function setKarmas ()
     {
       global $db;

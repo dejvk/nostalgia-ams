@@ -14,14 +14,16 @@ class Menu
 
   /**
    * Add item to menu. Items are stored as hypertext link. First item is handled like a homepage!
-   * @param $name Name of item as it should be displayed in menu. May contain anything, but you should avoid tag <a>. Required parameter.
-   * @param $address Target URL of the link. May be both relative or absolute. Required parameter.
+   * \param $name Name of item as it should be displayed in menu. May contain anything, but you should avoid tag <a>. Required parameter.
+   * \param $address Target URL of the link. May be both relative or absolute. Required parameter.
    **/
   public function AddItem ($name, $address)
   {
     $this->m_Items[$this->m_ItemsCnt++] = "<a href=\"$address\">$name</a>";
   }
   
+  /// Přidá nadpis třetí úrovně do menu
+  /** \param $name Jméno sekce */
   public function AddSection ($name)
   {
     $this->m_Items[$this->m_ItemsCnt++] = "<h3 class=\"sidebar-title\">$name</h3>";
@@ -33,7 +35,7 @@ class Menu
    * Table layout can be customized via class ".navigation" or via custom class added as parameter.
    * Function compare actual URL with URL of the link and tag menu item which is actual with class ".active-tab". All other tab should have tag ".inactive-tab".
    * First item is handled as homepage, so if no parameter is found in the address, first item will be highlighted.
-   * @param $css_class Optional parameter which is used as table class. May be used for deeper customization.
+   * \param $css_class Optional parameter which is used as table class. May be used for deeper customization.
    */
   public function PrintMenu($css_class = null)
   {
