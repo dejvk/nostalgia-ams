@@ -109,13 +109,14 @@
     {
       ?>
 
+        <h2>Databáze postav</h2>
         <div id="characterprofile-wrapper">
         <div id="characterprofile">
 
           <div class="characterportrait-big"> </div>
           <div class="character-name"><?=$this->_name; ?></div>
-          <div class="guild-name"> </div>
-          <div class="dob"><?=$this->_age; ?></div>
+          <div class="guild-name"><?=$this->GetGuildNames();?></div>
+          <div class="dob"><?=$this->_age?$this->_age." let":false;?></div>
           <div class="character-desc"><?=$this->_desc; ?></div>
 
         </div>
@@ -131,18 +132,32 @@
      *  \todo Počítat věk podle celého data. */
     private function SetAge ( $dob )
     {
-      /*
-      if ( $dob["date"] )
-        $this->_dateOfBirth = $dob["date"]."&nbsp;".$dob["year"];
-      else if ( $dob["year"] )
-        $this->_dateOfBirth = $dob["year"];*/
       if ($dob["year"])
         $this->_age = date("Y", mktime()) - 1393 - $dob["year"];
     }
+
+
+    /** Získá všechny cechy, ve kterých je postava registrovaná a vypíše je.
+     *  \return Seznam všech cechů postavy včetně hodností. */
+    private function GetGuildNames ()
+    {
+      global $db;
+      $q = $db -> query ("SELECT c.`name` AS guild, cr.`name` AS rank
+                          FROM ".T_GUILD_MEMBERS." cc
+                          JOIN ".T_GUILDS." c
+                           ON c.id = cc.id_spolku
+                          JOIN ".T_GUILD_RANKS." cr
+                           ON cr.id_cechu = c.id AND cr.id_ranku = cc.rank
+                          WHERE cc.guid = $this->_guid");
+
+      $ret = null;
+      while ( $r = $q -> fetch_assoc () )
+      {
+        $ret .= $r['rank']." &lt;".$r['guild']."&gt;<br>";
+      }
+      return $ret;
+    }
   };
-
-
-
 
   /// Reprezentuje seznam postav na účtu přihlášeného uživatele.
   /** \todo Umožnit reprezentaci libovolného seznamu postav. */

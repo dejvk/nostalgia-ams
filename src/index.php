@@ -41,6 +41,9 @@
     if (M_TICKETS)
       include './classes/Ticket.php';
 
+    if (M_GUILDMGR)
+      include './classes/Guild.php';
+
 ?>
 <!doctype html>
 <html lang="<?php echo L_LANG; ?>">
@@ -67,6 +70,8 @@
       $main_menu -> AddItem ("Žádosti o podporu", "?mode=unique");
     if (M_CHRREGISTER)
       $main_menu -> AddItem ("Databáze postav", "?mode=chrregister");
+    if (M_GUILDMGR)
+      $main_menu -> AddItem ("Databáze cechů", "?mode=guilds");
     if (M_LOGIN && ! Logged ())
     {
       $main_menu -> AddItem ("Přihlásit", "?mode=login");
@@ -185,6 +190,15 @@
       case "karma":
         $r = new KarmaList ();
         $r -> Draw ();
+        break;
+      case "guilds":
+        if ( ! $_GET['guild'] )
+          Guild::DrawListOfGuilds();
+        else
+        {
+          $r = new Guild ($_GET['guild']);
+          $r -> Draw ();
+        }
         break;
       case "tickets":
         $r = new TicketList ();

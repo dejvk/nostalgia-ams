@@ -33,13 +33,14 @@ td.character-name { font-variant: small-caps; font-weight: bold; }
 
 
 /* SHARED */
-#requestlist, #chrsheetreg, #characterlist, #karmalist, #custom-control, #ticketlist
+#requestlist, #chrsheetreg, #characterlist, #karmalist, #custom-control, #ticketlist, #guildlist, #guildmemberlist
  { width: 98%; text-align: center; margin: 0 auto 20px auto; background: #fff; border: 1px solid #ddd; border-top: 0; }
-#requestlist th, #chrsheetreg th, #characterlist th, #karmalist th, #custom-control th, #ticketlist th
+#requestlist th, #chrsheetreg th, #characterlist th, #karmalist th, #custom-control th, #ticketlist th, #guildlist th,
+#guildmemberlist th
   { font-size: 90%; font-weight: bold; padding: 7px; color: #678; background: #f9f9ff;
     border: 1px solid #ddd; border-bottom: 1px solid #eee; }
 #requestlist tr:hover td, #chrsheetreg tr:hover td, #characterlist tr:hover td, #karmalist tr:hover td,
-#accountprofile tr:hover td, #ticketlist tr:hover td
+#accountprofile tr:hover td, #ticketlist tr:hover td, #guildlist tr:hover, #guildmemberlist tr:hover
  { background: #eee; }
 
 /* LABELS */
@@ -123,10 +124,14 @@ a.continuebutton
 
 /* CHARACTER'S PROFILE */
 #characterprofile-wrapper
- { width: 98%; margin: 0 auto 20px auto; background: #fff; border: 1px solid #ddd; border-top: 0; min-height: 240px; padding-top: 10px; }
+ { margin: 0 auto 20px auto; background: #fff; border: 1px solid #ddd; border-top: 0; min-height: 240px; padding-top: 10px; }
 #characterprofile { margin: 20px; }
 #characterprofile .characterportrait-big
   { width: 150px; height: 200px; background: #ccc; float: left; margin: 0 10px 10px 0; }
 #characterprofile .character-name { font-size: 140%; }
-#characterprofile .guild-name { color: #444; /* TEST: */ content: "Název cechu"; }
-#characterprofile .character-desc { font-size: 95%; }
+#characterprofile .guild-name { color: #444; }
+#characterprofile .character-desc
+ { font-size: 95%; font-style: italic; margin-top: 25px; font-family: 'Trebuchet MS'; }
+
+
+/* GUILD REGISTER */
