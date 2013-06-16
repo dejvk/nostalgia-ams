@@ -1,9 +1,7 @@
 <?php
 
-/// Reprezentuje cech. Nehotové.
-/** \warning Třída není hotová.
- *  \todo Výpis členů cechu.
- *  \todo Administrační rozhraní pro cechmistra.*/
+/// Reprezentuje cech.
+/** \todo Administrační rozhraní pro cechmistra.*/
 class Guild
 {
   private $_uid;

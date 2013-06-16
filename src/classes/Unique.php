@@ -214,6 +214,7 @@
         case 11: $cls = 'approved'; $text = 'Schváleno'; break;
         case 20: $cls = 'denied';   $text = 'Zamítnuto'; break; ## closed by admin
         case 21: $cls = 'approved'; $text = 'Schváleno'; break; ## closed by admin
+        case 22: $cls = 'removed';  $text = 'Žádost zrušena'; break;
         default: $cls = 'closed';   $text = 'Uzavřeno';  break;
       }
 

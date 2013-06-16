@@ -58,6 +58,7 @@
 <body>
 <div id="wrapper">
   <div id="header">
+    <?php if (L_LOGO) echo "<div id=\"sitelogo\"><img src=\"".L_LOGO."\"></div>"; ?>
     <h1><?php echo L_SITENAME; ?></h1>
   </div>
 
