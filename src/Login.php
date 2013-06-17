@@ -44,6 +44,9 @@
         case  2:
           self::RegistrationStep2 ();
           break;
+        case  3:
+          self::RegistrationStep3 ();
+          break;
       }
     }
 
@@ -116,10 +119,63 @@
         <h2>Registrace herního účtu, krok 2</h2>
         <div id="registrationwizard">
           <?=self::CheckMultiacc();?>
+          
+          <table id="registrationdialogue">
+          <form method="post" action="?mode=registration&step=3">
+          <tr>
+            <th><label for="username">Uživatelské jméno:</label>
+            <td><input type="text" id="username" name="username">
+          </tr>
+          <tr>
+            <th><label for="password">Heslo:</label>
+            <td><input type="password" id="password" name="password">
+          </tr>
+          <tr>
+            <th><label for="password2">Heslo znovu:</label>
+            <td><input type="password" id="password2" name="password2">
+          </tr>
+          <tr>
+            <th><label for="email">E-mail:</label>
+            <td><input type="email" id="email" name="email" value="@">
+          </tr>
+          <tr>
+            <th>
+            <td><input class="continuebutton" type="submit"
+                  value="Pokračovat &raquo;">
+          </table>
 
         </div>
 
       <?php
+    }
+    
+    
+    /// Vyhodnotí požadavek na registraci a vypíše třetí krok
+    /** V případě, že je username obsazeno nebo se neshodují hesla, vrátí
+     *  uživatele zpět ke kroku 2 a zobrazí varování.
+     *  V případě úspěšné registrace vypíše reg. informace a spustí průvodce
+     *  instalací patche.
+     *  \throw Exception K adrese bylo přistoupeno přímo, ne formulářem.
+     *  \todo Průvodce instalací patche     */
+    static function RegistrationStep3 ()
+    {
+      if ( empty($_POST) )
+        throw new Exception ("Neplatný požadavek.");
+      
+      if ( ! self::UsernameAvailable() )
+      {
+        echo "<p class=\"registration-bad\">
+                Uživatelské jméno ".$_POST['username']." je již obsazené.
+                Zvolte prosím jiné.</p>";
+        return self::RegistrationStep2 ();
+      }
+      
+      if ( $_POST['password'] != $_POST['password2'] )
+      {
+        echo "<p class=\"registration-bad\">
+                Zadaná hesla se neshodují.</p>";
+        return self::RegistrationStep2 ();
+      }
     }
 
 
@@ -133,13 +189,29 @@
                           WHERE last_ip = '".$_SERVER['REMOTE_ADDR']."'");
       $cnt = $r -> num_rows;
       if ($cnt)
-        return "<p class=\"multiacc-bad\">
+        return "<p class=\"registration-bad\">
                   Na tomto počítači již nějaké hráče registrujeme.
                   Počet účtů: $cnt.<br>Pakliže vás bude hrát více z jedné IP
                   adresy, je nutné to oznámit GM týmu skrze ticketový systém
                   co nejdříve po přihlášení do hry, ať předejdete nedorozuměním.
                 </p>";
       return null;
+    }
+    
+    
+    /// Ověří, zda je uživatelské jméno předané v POST požadavku volné.
+    /** \retval true Uživatelské jméno je volné.
+     *  \retval false Uživatelské jméno je použité. */
+    static function UsernameAvailable ()
+    {
+      global $db;
+      $q = $db -> query ("SELECT COUNT(*) AS cnt
+                          FROM ".T_ACCOUNTS."
+                          WHERE username = '".$_POST['username']."'");
+      echo $db -> error;                    
+      $r = $q -> fetch_assoc ();
+      $q -> free();
+      return ($r['cnt']) ? false : true;
     }
   };
 
